@@ -1,98 +1,144 @@
-// Musical Arpeggio: ii V I Progression
+/* Output pin */
+#define PIN 13
+/* Change to 2 for a slower version of the song, the bigger the number the slower the song */
+#define SPEED 1.3
+/* Defining note frequency */
+#define C4  262
+#define D4  294
+#define E4  330
+#define F4  349
+#define G4  392
+#define A4  440
+#define B4  494
+#define C5  523
+#define D5  587
+#define E5  659
+#define F5  698
+#define G5  784
+#define A5  880
+#define B5  988
+/* Note of the song, 0 is a rest/pulse */
+const int notes[] = {
+  E4, G4, A4, A4, 0,
+  A4, B4, C5, C5, 0,
+  C5, D5, B4, B4, 0,
+  A4, G4, A4, 0,
 
-int noteC = 523;
-int noteD = 587;
-int noteE = 659;
-int noteF = 699;
-int noteG = 784;
-int noteA = 880;
-int noteB = 988;
-int noteChigh = 1047;
-int noteDhigh = 1175;
-int noteEhigh = 1319;
-int noteFhigh = 1397;
+  E4, G4, A4, A4, 0,
+  A4, B4, C5, C5, 0,
+  C5, D5, B4, B4, 0,
+  A4, G4, A4, 0,
 
-int dMinor[] = {noteD, noteF, noteA, noteChigh};
-int gSeven[] = {noteG, noteB, noteDhigh, noteFhigh};
-int cMaj[] = {noteC, noteE, noteG, noteB};
+  E4, G4, A4, A4, 0,
+  A4, C5, D5, D5, 0,
+  D5, E5, F5, F5, 0,
+  E5, D5, E5, A4, 0,
 
-int wholeNote = 1000;
-int halfNote = 500;
-int quartNote = 250;
-int dotHalf = 750;
-int dotQuart = 375;
-int extraWhole = 1250;
-int eightNote = 125;
-int fiveBeats = 1250;
-int fourAndHalfBeats = 1125;
+  A4, B4, C5, C5, 0,
+  D5, E5, A4, 0,
+  A4, C5, B4, B4, 0,
+  C5, A4, B4, 0,
 
-int outPin = 4;
-int noteLength = 500;
-int restLength = 500;
+  A4, A4,
+  /* Repeat of first part */
+  A4, B4, C5, C5, 0,
+  C5, D5, B4, B4, 0,
+  A4, G4, A4, 0,
 
-int melody[] = {noteD, noteF, noteA, noteF, noteD, noteChigh, noteF,
-                noteG, noteB, noteDhigh, noteB, noteG, noteFhigh, noteB,
-                noteC, noteE, noteG, noteE, noteC, noteB, noteE,
-                noteC, noteE, noteG, noteE, noteC, noteB, noteE};
-                
-int durations[] = {quartNote, quartNote, quartNote, eightNote, eightNote, halfNote, halfNote, 
-                   quartNote, quartNote, quartNote, eightNote, eightNote, halfNote, halfNote, 
-                   quartNote, quartNote, quartNote, eightNote, eightNote, halfNote, halfNote, 
-                   quartNote, quartNote, quartNote, eightNote, eightNote, halfNote, halfNote}; 
+  E4, G4, A4, A4, 0,
+  A4, B4, C5, C5, 0,
+  C5, D5, B4, B4, 0,
+  A4, G4, A4, 0,
+
+  E4, G4, A4, A4, 0,
+  A4, C5, D5, D5, 0,
+  D5, E5, F5, F5, 0,
+  E5, D5, E5, A4, 0,
+
+  A4, B4, C5, C5, 0,
+  D5, E5, A4, 0,
+  A4, C5, B4, B4, 0,
+  C5, A4, B4, 0,
+  /* End of Repeat */
+
+  E5, 0, 0, F5, 0, 0,
+  E5, E5, 0, G5, 0, E5, D5, 0, 0,
+  D5, 0, 0, C5, 0, 0,
+  B4, C5, 0, B4, 0, A4,
+
+  E5, 0, 0, F5, 0, 0,
+  E5, E5, 0, G5, 0, E5, D5, 0, 0,
+  D5, 0, 0, C5, 0, 0,
+  B4, C5, 0, B4, 0, A4
+};
+/* duration of each note (in ms) Quarter Note is set to 250 ms */
+const int durations[] = {
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125,
+
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125,
+
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 125, 250, 125,
+
+  125, 125, 250, 125, 125,
+  250, 125, 250, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 375,
+
+  250, 125,
+  //Rpeat of First Part
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125,
+
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125,
+
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 125, 250, 125,
+
+  125, 125, 250, 125, 125,
+  250, 125, 250, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 375,
+  //End of Repeat
+
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 125, 125, 125, 375,
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 500,
+
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 125, 125, 125, 375,
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 500
+};
 
 void setup() {
+  Serial.begin(9600);
+  for (int x = 0; x < 203; x++) {       /* 203 is the total number of music notes in the song */
+    int wait = durations[x] * SPEED;
+    tone(PIN, notes[x], wait);        /* tone(pin,frequency,duration) */
+    Serial.write("Notes : ");
+    Serial.println(notes[x]);
+    Serial.write("Times : ");
+    Serial.println(wait);
+    delay(wait);
+  }                        /* delay is used so it doesn't go to the next loop before tone is finished playing */
 }
 
 void loop() {
-  playSequence();
-  noTone(outPin);
-  delay(2000);
-  chordDminor();
-  chordG7();
-  chordCmaj();
-  chordCmaj();
-  noTone(outPin);
-  delay(5000); 
-}
 
-void playSequence() {
-  for (int i = 0; i < 28; i++)
-  {
-    playNoteAndBeat(melody[i], durations[i]);
-  }
-}
-
-void playNoteAndBeat(int pitch, int beat) {
-  tone(outPin, pitch);
-  delay(beat);
-  
-  
-}
-
-void chordDminor() {
-  for (int i = 0; i < 4; i++)
-  {
-    playNote(dMinor[i]);
-  }  
-}
-
-void chordG7() {
-  for (int i = 0; i < 4; i++)
-  {
-    playNote(gSeven[i]);
-  }  
-}
-
-void chordCmaj() {
-  for (int i = 0; i < 4; i++)
-  {
-    playNote(cMaj[i]);
-  }  
-}
-
-void playNote(int note) {
-  tone(outPin, note);
-  delay(noteLength);
-  noTone(outPin);  
-  delay(restLength);
 }
